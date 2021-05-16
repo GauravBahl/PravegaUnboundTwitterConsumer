@@ -58,8 +58,10 @@ public class ClassificationService {
         String tweetText = json.get("text").toString();
 
         String classifiedResult = classifyTweetText(tweetText);
-        json.put("preds_label", classifiedResult);
-
-        return json.toString();
+        if(!"related".equalsIgnoreCase(classifiedResult)) {
+                json.put("preds_label", classifiedResult);
+                return json.toString();
+        }
+    return null;
     }
 }

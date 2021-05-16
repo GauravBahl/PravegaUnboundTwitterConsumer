@@ -45,10 +45,12 @@ public class PravegaReaderService {
                     if (event != null && event.getEvent() != null && event.getEvent().length()>10) {
                         String tweet = event.getEvent();
                         String classifiedTweet = classificationService.getTweetWithClassification(tweet);
-                        TwitterResponseMapper responseMapper = gson.fromJson(classifiedTweet, TwitterResponseMapper.class);
-                        responseMapper.setPlace(new TwitterPlaceMapper());
-                        String tweetJson = gson.toJson(responseMapper);
-                        elasticSearchService.saveData(tweetJson);
+                        if(classifiedTweet!=null) {
+                            TwitterResponseMapper responseMapper = gson.fromJson(classifiedTweet, TwitterResponseMapper.class);
+                            responseMapper.setPlace(new TwitterPlaceMapper());
+                            String tweetJson = gson.toJson(responseMapper);
+                            elasticSearchService.saveData(tweetJson);
+                        }
                     }
                 } catch (ReinitializationRequiredException e) {
                     e.printStackTrace();
